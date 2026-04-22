@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧘 Mirror Yoga Game - Trò Chơi Nhân Bản Tư Thế</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧘 Mirror Yoga Game</h1>
+            <p>Nhân bản tư thế & chinh phục điểm cao</p>
+        </header>
+
+        <!-- Menu Chính -->
+        <div id="mainMenu" class="menu-section active">
+            <div class="menu-content">
+                <h2>Chọn Mode Chơi</h2>
+                
+                <button class="btn btn-primary" onclick="startGame('easy')">
+                    ⭐ Easy (Dễ)
+                </button>
+                <button class="btn btn-primary" onclick="startGame('medium')">
+                    ⭐⭐ Medium (Trung Bình)
+                </button>
+                <button class="btn btn-primary" onclick="startGame('hard')">
+                    ⭐⭐⭐ Hard (Khó)
+                </button>
+                
+                <hr>
+                
+                <button class="btn btn-secondary" onclick="showLeaderboard()">
+                    🏆 Bảng Xếp Hạng
+                </button>
+                <button class="btn btn-secondary" onclick="showGuide()">
+                    📖 Hướng Dẫn
+                </button>
+                <button class="btn btn-secondary" onclick="clearAllScores()">
+                    🗑️ Xóa Điểm
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-section">
+            <div class="game-header">
+                <div class="level-info">
+                    <span id="levelDisplay">Level: Easy</span>
+                    <span id="timerDisplay">⏱️ 0s</span>
+                </div>
+                <button class="btn-close" onclick="backToMenu()">✕</button>
+            </div>
+
+            <div class="game-content">
+                <!-- Target Pose -->
+                <div class="pose-container">
+                    <h3>Tư Thế Mục Tiêu</h3>
+                    <canvas id="targetCanvas" width="320" height="240"></canvas>
+                    <p id="targetPoseName">Loading...</p>
+                </div>
+
+                <!-- User Pose -->
+                <div class="pose-container">
+                    <h3>Tư Thế Của Bạn</h3>
+                    <video id="userVideo" width="320" height="240" autoplay></video>
+                    <canvas id="userCanvas" width="320" height="240"></canvas>
+                </div>
+
+                <!-- Score Display -->
+                <div class="score-display">
+                    <div class="score-box">
+                        <h2 id="currentScore">0%</h2>
+                        <p>Độ Chính Xác</p>
+                    </div>
+                    <div class="score-box">
+                        <h2 id="bestScore">0%</h2>
+                        <p>Điểm Tốt Nhất</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-footer">
+                <button class="btn btn-success" id="submitBtn" onclick="submitScore()" style="display:none;">
+                    ✓ Xác Nhận (Score ≥ 70%)
+                </button>
+                <p id="statusMessage" class="status-message"></p>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard" class="menu-section">
+            <div class="menu-content">
+                <h2>🏆 Bảng Xếp Hạng</h2>
+                <div class="leaderboard-list" id="leaderboardList">
+                    <p>Chưa có điểm nào</p>
+                </div>
+                <button class="btn btn-secondary" onclick="backToMenu()">← Quay Lại</button>
+            </div>
+        </div>
+
+        <!-- Guide -->
+        <div id="guide" class="menu-section">
+            <div class="menu-content">
+                <h2>📖 Hướng Dẫn Chơi</h2>
+                <div class="guide-content">
+                    <h3>🎯 Mục Tiêu:</h3>
+                    <p>Nhân bản chính xác tư thế yoga được hiển thị để đạt điểm cao nhất.</p>
+                    
+                    <h3>⚙️ Cách Chơi:</h3>
+                    <ol>
+                        <li>Chọn level (Dễ/Trung Bình/Kh��)</li>
+                        <li>Cho phép truy cập camera</li>
+                        <li>Nhân bản chính xác tư thế trên màn hình</li>
+                        <li>Khi độ chính xác ≥ 70%, nút "Xác Nhận" sẽ sáng</li>
+                        <li>Nhấn "Xác Nhận" để ghi lại điểm</li>
+                    </ol>
+                    
+                    <h3>⭐ Mức Độ:</h3>
+                    <ul>
+                        <li><strong>Easy:</strong> 6 tư thế cơ bản (30s mỗi tư thế)</li>
+                        <li><strong>Medium:</strong> 10 tư thế (20s mỗi tư thế)</li>
+                        <li><strong>Hard:</strong> 15 tư thế (15s mỗi tư thế)</li>
+                    </ul>
+                    
+                    <h3>💡 Mẹo:</h3>
+                    <ul>
+                        <li>Đứng cách camera 2-3 mét</li>
+                        <li>Ánh sáng tốt giúp nhận diện chính xác hơn</li>
+                        <li>Chuyển động chậm và ổn định</li>
+                    </ul>
+                </div>
+                <button class="btn btn-secondary" onclick="backToMenu()">← Quay Lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
